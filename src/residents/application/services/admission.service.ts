@@ -4,6 +4,8 @@ import { Resident } from '@/residents/domain/entities/resident.entity';
 import { Cpf } from '@/residents/domain/value-objects/cpf.value-object';
 import { CreateAdmissionDto } from '@/residents/presentation/dtos/create-admission.dto';
 import { ResidentStatus } from '@/residents/infraestructure/schemas/resident.schema';
+import { Rg } from '@/residents/domain/value-objects/rg.value-object';
+import { SusCard } from '@/residents/domain/value-objects/sus-card.value-object';
 
 /**
  * @class AdmissionService
@@ -28,6 +30,8 @@ export class AdmissionService {
    */
   public async admitResident(dto: CreateAdmissionDto): Promise<Resident> {
     const validatedCpf = new Cpf(dto.cpf);
+    const validatedRg = new Rg(dto.rg);
+    const validatedSus = new SusCard(dto.susCardNumber);
 
     const birthDate = new Date(dto.birthDate);
     const admissionDate = new Date(dto.admissionDate);
@@ -40,6 +44,8 @@ export class AdmissionService {
       admissionDate,
       status: ResidentStatus.ACTIVE,
       cpf: validatedCpf.getValue(),
+      rg: validatedRg.getValue(),
+      susCardNumber: validatedSus.getValue(),
     });
     await this.residentRepository.save(resident);
     return resident;

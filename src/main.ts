@@ -7,4 +7,4 @@ async function bootstrap(): Promise<void> {
   await app.listen(port);
   console.log(`CGVM-API is running on: http://localhost:${port}`);
 }
-bootstrap();
+void bootstrap();
