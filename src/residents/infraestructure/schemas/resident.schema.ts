@@ -1,14 +1,28 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, HydratedDocument } from "mongoose";
 
+/**
+ * @type ResidentDocument
+ * @description Tipo customizado que representa um documento do Mongoose "hidratado".
+ * Combina as propriedades da classe ResidentSchema com as propriedades e métodos nativos 
+ * de documentos do MongoDB (como _id, __v, .save(), .populate(), etc.).
+ */
 export type ResidentDocument = HydratedDocument<ResidentSchema>;
 
+/**
+ * @enum Gender
+ * @description Opções de gênero biológico e identidade do residente para fins de registro e cuidado.
+ */
 export enum Gender {
   MALE = "male",
   FEMALE = "female",
   OTHER = "other",
 }
 
+/**
+ * @enum EducationLevel
+ * @description Graus de instrução e escolaridade formais declarados na admissão do idoso.
+ */
 export enum EducationLevel {
   NONE = "none",
   PRIMARY = "primary",
@@ -16,6 +30,10 @@ export enum EducationLevel {
   HIGHER = "higher",
 }
 
+/**
+ * @enum ResidentStatus
+ * @description Estados do ciclo de vida e situação administrativa atual do residente dentro da ILPI.
+ */
 export enum ResidentStatus {
   ACTIVE = "active",
   INACTIVE = "inactive",
@@ -23,6 +41,11 @@ export enum ResidentStatus {
   DECEASED = "deceased",
 }
 
+/**
+ * @class ResidentSchema
+ * @description Definição do modelo de dados e mapeamento estrutural para o MongoDB.
+ * Modela a collection 'residents' na infraestrutura e aplica constraints, tipos e hooks nativos.
+ */
 @Schema({
   timestamps: true,
   collection: "residents"
@@ -98,4 +121,10 @@ export class ResidentSchema extends Document {
   bloodType?: string;
 }
 
+/**
+ * @const ResidentSchemaDefinition
+ * @description Compila a definição de classe do NestJS em um Schema nativo do Mongoose.
+ * Usado exclusivamente pelo NestJS na inicialização de módulos (`MongooseModule.forFeature`) 
+ * para injetar a estrutura correspondente e interagir diretamente com o banco NoSQL.
+ */
 export const ResidentSchemaDefinition = SchemaFactory.createForClass(ResidentSchema);
