@@ -1,11 +1,13 @@
-import { MongooseModuleOptions } from "@nestjs/mongoose";
+import { MongooseModuleOptions } from '@nestjs/mongoose';
 
 /**
  * @function getMongoConfig
- * @description Fábrica de configuração (Factory) responsável por ler dinamicamente 
- * as variáveis de ambiente e montar as opções de conexão do Mongoose com o MongoDB.
- * Centraliza parâmetros de timeout e resiliência cruciais para o ambiente de produção.
- * * @returns {MongooseModuleOptions} Objeto contendo a URI estruturada e as opções de pooling/timeout do Mongoose.
+ * @description Fábrica de configuração (Factory) responsável por ler
+ * dinamicamente as variáveis de ambiente e montar as opções de conexão do
+ * Mongoose com o MongoDB. Centraliza parâmetros de timeout e resiliência
+ * cruciais para o ambiente de produção.
+ * * @returns {MongooseModuleOptions} Objeto contendo a URI estruturada e as
+ * opções de pooling/timeout do Mongoose.
  */
 export const getMongoConfig = (): MongooseModuleOptions => {
   const host = process.env.MONGO_HOST;

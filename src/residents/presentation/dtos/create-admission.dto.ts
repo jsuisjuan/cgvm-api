@@ -1,11 +1,24 @@
-import { IsNotEmpty, IsString, IsEnum, IsDateString, IsBoolean, IsOptional, MaxLength, Length } from "class-validator";
-import { EducationLevel, Gender } from "../../infraestructure/schemas/resident.schema";
+import {
+  IsNotEmpty,
+  IsString,
+  IsEnum,
+  IsDateString,
+  IsBoolean,
+  IsOptional,
+  MaxLength,
+  Length,
+} from 'class-validator';
+import {
+  EducationLevel,
+  Gender,
+} from '@/residents/infraestructure/schemas/resident.schema';
 
 /**
  * @class CreateAdmissionDto
- * @description Data Transfer Object (DTO) que define a estrutura de dados, tipagem rigorosa 
- * e regras de validação para o payload de entrada na criação de uma nova Ficha Admissional.
- * Utilizado na camada de Apresentação para barrar requisições inválidas antes de chegarem ao domínio.
+ * @description Data Transfer Object (DTO) que define a estrutura de dados,
+ * tipagem rigorosa e regras de validação para o payload de entrada na criação
+ * de uma nova Ficha Admissional. Utilizado na camada de Apresentação para
+ * barrar requisições inválidas antes de chegarem ao domínio.
  */
 export class CreateAdmissionDto {
   @IsNotEmpty()

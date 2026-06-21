@@ -1,4 +1,8 @@
-import { Gender, EducationLevel, ResidentStatus } from "../../infraestructure/schemas/resident.schema";
+import {
+  Gender,
+  EducationLevel,
+  ResidentStatus,
+} from '@/residents/infraestructure/schemas/resident.schema';
 
 /**
  * @interface ResidentProps
@@ -26,23 +30,26 @@ export interface ResidentProps {
 
 /**
  * @class Resident
- * @description Entidade de Domínio Puro (DDD) que representa um idoso residente na ILPI.
- * Centraliza as regras macro de negócio, comportamentos e ciclo de vida do residente,
- * mantendo-se totalmente isolada de frameworks ou acoplamentos com o banco de dados.
+ * @description Entidade de Domínio Puro (DDD) que representa um idoso
+ * residente na ILPI. Centraliza as regras macro de negócio, comportamentos
+ * e ciclo de vida do residente, mantendo-se totalmente isolada de frameworks
+ * ou acoplamentos com o banco de dados.
  */
 export class Resident {
   private _id?: string;
   private props: ResidentProps;
 
   /**
-   * Constrói uma instância da entidade Resident executando as invariantes de negócio obrigatórias.
-   * @param {ResidentPropps} props - Propriedades de dados do residente. 
-   * @param {string} [id] - Identificador único opcional (caso o registro já exista na persistência).
+   * Constrói uma instância da entidade Resident executando as invariantes de
+   * negócio obrigatórias.
+   * @param {ResidentPropps} props - Propriedades de dados do residente.
+   * @param {string} [id] - Identificador único opcional (caso o registro já
+   * exista na persistência).
    * @throws {Error} Se o nome do residente for vazio ou inválido.
    */
   constructor(props: ResidentProps, id?: string) {
     if (!props.name || props.name.trim().length == 0) {
-      throw new Error("Resident name cannot be empty.");
+      throw new Error('Resident name cannot be empty.');
     }
     this._id = id;
     this.props = props;
@@ -51,7 +58,8 @@ export class Resident {
   /**
    * Converte a Entidade de Domínio em um objeto literal JSON seguro e tipado.
    * Muito utilizado pelas camadas de apresentação e infraestrutura (mappers).
-   * @returns {{ id?: string } & ResidentProps } Estado atualizado da entidade em formato primitivo estruturado.
+   * @returns {{ id?: string } & ResidentProps } Estado atualizado da entidade
+   * em formato primitivo estruturado.
    */
   public toJSON(): { id?: string } & ResidentProps {
     return { id: this._id, ...this.props };
@@ -67,13 +75,15 @@ export class Resident {
   }
 
   /**
-   * Arquiva de forma permanete ou prolongada a ficha do idoso, alterando o seu status
-   * motivado por óbito ou por rescisão contratual/saída voluntária (inativo).
-   * @param {ResidentStatus.INACTIVE | ResidentStatus.DECEASED} reason - Motivo restrito do arquivamento.
+   * Arquiva de forma permanete ou prolongada a ficha do idoso, alterando o
+   * seu status motivado por óbito ou por rescisão contratual/saída voluntária
+   * (inativo).
+   * @param {ResidentStatus.INACTIVE | ResidentStatus.DECEASED} reason - Motivo
+   * restrito do arquivamento.
    * @returns {void}
    */
   public archive(
-    reason: ResidentStatus.INACTIVE | ResidentStatus.DECEASED
+    reason: ResidentStatus.INACTIVE | ResidentStatus.DECEASED,
   ): void {
     this.props.status = reason;
   }

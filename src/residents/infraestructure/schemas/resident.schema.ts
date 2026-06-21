@@ -1,54 +1,59 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document, HydratedDocument } from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, HydratedDocument } from 'mongoose';
 
 /**
  * @type ResidentDocument
- * @description Tipo customizado que representa um documento do Mongoose "hidratado".
- * Combina as propriedades da classe ResidentSchema com as propriedades e métodos nativos 
- * de documentos do MongoDB (como _id, __v, .save(), .populate(), etc.).
+ * @description Tipo customizado que representa um documento do Mongoose
+ * "hidratado". Combina as propriedades da classe ResidentSchema com as
+ * propriedades e métodos nativos de documentos do MongoDB (como _id,
+ * __v, .save(), .populate(), etc.).
  */
 export type ResidentDocument = HydratedDocument<ResidentSchema>;
 
 /**
  * @enum Gender
- * @description Opções de gênero biológico e identidade do residente para fins de registro e cuidado.
+ * @description Opções de gênero biológico e identidade do residente
+ * para fins de registro e cuidado.
  */
 export enum Gender {
-  MALE = "male",
-  FEMALE = "female",
-  OTHER = "other",
+  MALE = 'male',
+  FEMALE = 'female',
+  OTHER = 'other',
 }
 
 /**
  * @enum EducationLevel
- * @description Graus de instrução e escolaridade formais declarados na admissão do idoso.
+ * @description Graus de instrução e escolaridade formais declarados na
+ * admissão do idoso.
  */
 export enum EducationLevel {
-  NONE = "none",
-  PRIMARY = "primary",
-  SECONDARY = "secondary",
-  HIGHER = "higher",
+  NONE = 'none',
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+  HIGHER = 'higher',
 }
 
 /**
  * @enum ResidentStatus
- * @description Estados do ciclo de vida e situação administrativa atual do residente dentro da ILPI.
+ * @description Estados do ciclo de vida e situação administrativa atual do
+ * residente dentro da ILPI.
  */
 export enum ResidentStatus {
-  ACTIVE = "active",
-  INACTIVE = "inactive",
-  HOSPITALIZED = "hospitalized",
-  DECEASED = "deceased",
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  HOSPITALIZED = 'hospitalized',
+  DECEASED = 'deceased',
 }
 
 /**
  * @class ResidentSchema
- * @description Definição do modelo de dados e mapeamento estrutural para o MongoDB.
- * Modela a collection 'residents' na infraestrutura e aplica constraints, tipos e hooks nativos.
+ * @description Definição do modelo de dados e mapeamento estrutural para o
+ * MongoDB. Modela a collection 'residents' na infraestrutura e aplica
+ * constraints, tipos e hooks nativos.
  */
 @Schema({
   timestamps: true,
-  collection: "residents"
+  collection: 'residents',
 })
 export class ResidentSchema extends Document {
   @Prop({ required: true, trim: true, maxLength: 255 })
@@ -69,10 +74,10 @@ export class ResidentSchema extends Document {
   @Prop({ required: true })
   admissionDate!: Date;
 
-  @Prop({ 
-    required: true, 
-    enum: ResidentStatus, 
-    default: ResidentStatus.ACTIVE 
+  @Prop({
+    required: true,
+    enum: ResidentStatus,
+    default: ResidentStatus.ACTIVE,
   })
   status!: string;
 
@@ -85,26 +90,26 @@ export class ResidentSchema extends Document {
   @Prop({
     required: true,
     unique: true,
-    match: [/^[a-zA-Z0-9]{5,14}$/, "Please provide a valid RG number"]
+    match: [/^[a-zA-Z0-9]{5,14}$/, 'Please provide a valid RG number'],
   })
   rg!: string;
 
-  @Prop({ 
-    required: true, 
-    unique: true, 
+  @Prop({
+    required: true,
+    unique: true,
     trim: true,
-    match: [/^\d{11}$/, "Please provide a valid CPF with exactly 11 digits"]
+    match: [/^\d{11}$/, 'Please provide a valid CPF with exactly 11 digits'],
   })
   cpf!: string;
 
-  @Prop({ 
-    required: true, 
+  @Prop({
+    required: true,
     unique: true,
     trim: true,
     match: [
-      /^\d{15}$/, 
-      "Please provide a valid SUS National Health Card with 15 digits"
-    ]
+      /^\d{15}$/,
+      'Please provide a valid SUS National Health Card with 15 digits',
+    ],
   })
   susCardNumber!: string;
 
@@ -116,15 +121,17 @@ export class ResidentSchema extends Document {
 
   @Prop({ required: false, trim: true })
   previousOccupation?: string;
-  
+
   @Prop({ required: false, trim: true })
   bloodType?: string;
 }
 
 /**
  * @const ResidentSchemaDefinition
- * @description Compila a definição de classe do NestJS em um Schema nativo do Mongoose.
- * Usado exclusivamente pelo NestJS na inicialização de módulos (`MongooseModule.forFeature`) 
- * para injetar a estrutura correspondente e interagir diretamente com o banco NoSQL.
+ * @description Compila a definição de classe do NestJS em um Schema nativo
+ * do Mongoose.Usado exclusivamente pelo NestJS na inicialização de módulos
+ * (`MongooseModule.forFeature`) para injetar a estrutura correspondente e
+ * interagir diretamente com o banco NoSQL.
  */
-export const ResidentSchemaDefinition = SchemaFactory.createForClass(ResidentSchema);
+export const ResidentSchemaDefinition =
+  SchemaFactory.createForClass(ResidentSchema);
