@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ResidentRepository } from '@/residents/infraestructure/repositories/resident.repository';
 import { Resident } from '@/residents/domain/entities/resident.entity';
-import { Cpf } from '@/residents/domain/value-objects/cpf.value-object';
 import { CreateAdmissionDto } from '@/residents/presentation/dtos/create-admission.dto';
-import { ResidentStatus } from '@/residents/infraestructure/schemas/resident.schema';
-import { Rg } from '@/residents/domain/value-objects/rg.value-object';
-import { SusCard } from '@/residents/domain/value-objects/sus-card.value-object';
+import { ResidentDomainMapper } from '@/residents/domain/mappers/resident-domain.mapper';
 
 /**
  * @class AdmissionService
@@ -29,42 +26,8 @@ export class AdmissionService {
    * falharem.
    */
   public async admitResident(dto: CreateAdmissionDto): Promise<Resident> {
-    const validatedCpf = new Cpf(dto.cpf);
-    const validatedRg = new Rg(dto.rg);
-    const validatedSus = new SusCard(dto.susCardNumber);
-
-    const birthDate = new Date(dto.birthDate);
-    const admissionDate = new Date(dto.admissionDate);
-    const admissionAge = this.calculateAdmissionAge(birthDate, admissionDate);
-
-    const resident = new Resident({
-      ...dto,
-      birthDate,
-      admissionAge,
-      admissionDate,
-      status: ResidentStatus.ACTIVE,
-      cpf: validatedCpf.getValue(),
-      rg: validatedRg.getValue(),
-      susCardNumber: validatedSus.getValue(),
-    });
+    const resident = ResidentDomainMapper.toDomain(dto);
     await this.residentRepository.save(resident);
     return resident;
-  }
-
-  /**
-   * Algoritmo utilitário que calcula a idade cronológica exata do idoso
-   * com base na sua data de nascimento e na data específica da admissão.
-   * @param {Date} birth - Data de nascimento do residente.
-   * @param {Date} admission - Data em que a admissão está sendo realizada.
-   * @returns {number} A idade calculada em anos.
-   * @private
-   */
-  private calculateAdmissionAge(birth: Date, admission: Date): number {
-    let age = admission.getFullYear() - birth.getFullYear();
-    const monDiff = admission.getMonth() - birth.getMonth();
-    const isBeforeBirth =
-      monDiff === 0 && admission.getDate() < birth.getDate();
-    if (monDiff < 0 || isBeforeBirth) age--;
-    return age;
   }
 }

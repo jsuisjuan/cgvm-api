@@ -28,6 +28,12 @@ export interface ResidentProps {
   bloodType?: string;
 }
 
+export interface ResidentDocuments {
+  cpf: string;
+  rg: string;
+  susCardNumber: string;
+}
+
 /**
  * @class Resident
  * @description Entidade de Domínio Puro (DDD) que representa um idoso
